@@ -1,35 +1,28 @@
-<bwa_align.mk
 
-BWA_ALIGN_TARGETS=`{find -L data/ -name '*.fastq.gz' \
+SORT_INDEX_TARGETS=`{find -L data/ -name '*.fastq.gz' \
 	| sed \
-		-e 's#data/#results/bwa_align/#g' \
-		-e 's#_L001_R[12]_001\.fastq\.gz$#.sorted.bam.bai#g' \
+		-e 's#data/#results/sort_index/#g' \
+		-e 's#_L001_R[12]_001\.fastq\.gz$#\.sorted\.bam\.bai#g' \
 	| sort -u \
 }
 
-bwa_align:V: $BWA_ALIGN_TARGETS
+sort_index:V:$SORT_INDEX_TARGETS
 
-NPROC=1
-results/bwa_align/%.sam:	data/%_L001_R1_001.fastq.gz	data/%_L001_R2_001.fastq.gz
-	mkdir -p `dirname $target`
-	bwa mem \
-		-t $THREADS \
-		$REFERENCE \
-		$prereq \
-		> $target
+results/bwa_align/%.sam:	
+	cd alignment
+	mk -dep
 
-NPROC=$THREADS
-results/bwa_align/%.bam:	results/bwa_align/%.sam
+results/sort_index/%.unsorted.bam:	results/bwa_align/%.sam
 	mkdir -p `dirname $target`
 	samtools  view -h -b -S $prereq \
 	      -o $target
 
-results/bwa_align/%.sorted.bam:	results/bwa_align/%.bam
+results/sort_index/%.sorted.bam:	results/sort_index/%.unsorted.bam
 	mkdir -p `dirname $target`
 	samtools sort $prereq \
 		-T $prereq.nnnn.bam \
 		-o $target
 
-results/bwa_align/%.sorted.bam.bai:	results/bwa_align/%.sorted.bam
+results/sort_index/%.sorted.bam.bai:	results/sort_index/%.sorted.bam
 	mkdir -p `dirname $target`
 	samtools index $prereq
