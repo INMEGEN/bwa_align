@@ -3,13 +3,7 @@
 # This program uses threads, so we use only one process
 NPROC=1
 
-BWA_ALIGN_TARGETS=`{find -L ../data/ -name '*.fastq.gz' \
-		-o -name '*.fastq' \
-	| sed \
-		-e 's#\.\./data/#../results/bwa_align/#g' \
-		 -e 's#_L001_R[12]_001\.fastq(\.gz)?$#.sam#g' \
-	| sort -u \
-}
+BWA_ALIGN_TARGETS=`{./bwa_targets }
 
 bwa_align:V: $BWA_ALIGN_TARGETS
 
