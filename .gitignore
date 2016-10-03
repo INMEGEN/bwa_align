@@ -6,6 +6,9 @@ cmake_install.cmake
 install_manifest.txt
 CTestTestfile.cmake
 
+data
+results
+
 *.DS_Store
 .AppleDouble
 .LSOverride
