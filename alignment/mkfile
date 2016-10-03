@@ -14,3 +14,6 @@ bwa_align:V: $BWA_ALIGN_TARGETS
 		$REFERENCE \
 		$prereq \
 		> $target
+
+../data/%.fastq.gz:	../data/%.fastq
+	gzip $prereq

@@ -12,17 +12,16 @@ results/bwa_align/%.sam:
 	cd alignment
 	mk -dep
 
-results/sort_index/%.unsorted.bam:	results/bwa_align/%.sam
+results/sort_index/%.unsorted.bam:D:	results/bwa_align/%.sam
 	mkdir -p `dirname $target`
 	samtools  view -h -b -S $prereq \
-	      -o $target
+	      > $target
 
-results/sort_index/%.sorted.bam:	results/sort_index/%.unsorted.bam
+results/sort_index/%.sorted.bam:D:	results/sort_index/%.unsorted.bam
 	mkdir -p `dirname $target`
-	samtools sort $prereq \
-		-T $prereq.nnnn.bam \
-		-o $target
+	samtools sort -f $prereq \
+		$target
 
-results/sort_index/%.sorted.bam.bai:	results/sort_index/%.sorted.bam
+results/sort_index/%.sorted.bam.bai:D:	results/sort_index/%.sorted.bam
 	mkdir -p `dirname $target`
 	samtools index $prereq
