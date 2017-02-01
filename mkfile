@@ -10,17 +10,19 @@ sort_index:V:$SORT_INDEX_TARGETS
 
 results/bwa_align/%.sam:	
 	cd alignment
-	mk -dep
+	mk
 
 results/unsorted/%.bam:D:	results/bwa_align/%.sam
 	mkdir -p `dirname $target`
 	samtools  view -h -b -S $prereq \
-	      > $target
+	      -o $target
 
 results/sort_index/%.sorted.bam:D:	results/unsorted/%.bam
 	mkdir -p `dirname $target`
-	samtools sort -f $prereq \
-		$target
+	samtools sort \
+		-o $target \
+		--output-fmt BAM \
+		$prereq
 
 results/sort_index/%.sorted.bam.bai:D:	results/sort_index/%.sorted.bam
 	mkdir -p `dirname $target`
