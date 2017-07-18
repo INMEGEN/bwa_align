@@ -1,0 +1,4 @@
+#!/bin/sh
+find -L data/ -name '*.fastq.gz' \
+| sed -r -e 's#data/#results/bams/#g' -e 's#_R[12]_001\.fastq\.gz#.bam#g' \
+| sort -u
