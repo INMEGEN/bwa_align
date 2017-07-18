@@ -20,6 +20,6 @@ data/%_R2_001.fastq.gz
 
 results/bams/%.bam:D:	results/bwa_align/%.sam
 	mkdir -p `dirname $target`
-	samtools  view -h -b -S $prereq \
+	samtools view -h -b -S $prereq \
 	      -o $target".build" \
 	&& mv $target".build" $target
