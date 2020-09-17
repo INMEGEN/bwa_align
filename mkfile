@@ -7,7 +7,7 @@ BWA_ALIGN_TARGETS=`{ bin/targets }
 
 bwa_align:V: $BWA_ALIGN_TARGETS
 
-results/bwa_align/%.sam	\
+results/%.sam	\
 results/%.sam.log: data/%_L001_R1_001.fastq.gz data/%_L001_R2_001.fastq.gz
 	mkdir -p `dirname $target`
 	READGROUP=`echo $stem | bin/extract-fastq-data`
@@ -18,7 +18,7 @@ results/%.sam.log: data/%_L001_R1_001.fastq.gz data/%_L001_R2_001.fastq.gz
 		$REFERENCE \
 		$prereq \
 		> $target".build" 2> $target".log.build" \
-	&& mv $target".build" $target
+	&& mv $target".build" $target \
 	&& mv $target".log.build" $target".log"
 
 ##Sam to bam conversion
@@ -30,7 +30,7 @@ results/%.bam : results/%.sam
 
 ##Ordering BAMs by chromosome coordinate
 results/%.sorted.bam : results/%.bam
-	picard-tools SortSam \
+	java -jar /home/adminserver/bin/picard/picard.jar SortSam \
 		I=$prereq \
 		O=$target".build" \
 		SO=coordinate \

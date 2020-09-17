@@ -1,2 +1,4 @@
 # Ruta a la referencia
-REFERENCE=/labs/home/hachepunto/BRCA_mtDNA_duos/reference/NC_012920.fasta
+REFERENCE=/references/mitocondria/NCBI_NC_012920.1_Homo_sapiens_mitochondrion.fasta
+
+
